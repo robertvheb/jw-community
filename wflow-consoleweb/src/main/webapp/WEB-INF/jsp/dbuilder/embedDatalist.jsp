@@ -32,7 +32,7 @@
             $(".actions").append(button);
 
             // set parent ID
-            var gridId = "<ui:stripTag html="${id}"/>";
+            var gridId = "<ui:escape value="${id}" format="javascript"/>";
 
             // click handler
             $(button).off("click");

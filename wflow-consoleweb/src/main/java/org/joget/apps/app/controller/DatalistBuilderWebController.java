@@ -532,6 +532,22 @@ public class DatalistBuilderWebController {
             return null;
         }
         
+        if(callbackSetting == null || callbackSetting.isEmpty()){
+            callbackSetting = "{}";
+        }
+        
+        try {
+            JSONObject jobject = new JSONObject(callbackSetting);
+        } catch (JSONException joe) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        
+        if (!callback.matches("(?i)^[$A-Z_][0-9A-Z_$]*$")) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        
         String json = datalistDefinition.getJson();
         String escapedJson = StringEscapeUtils.escapeJavaScript(json);
         DataList dataList = dataListService.fromJson(json);

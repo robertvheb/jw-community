@@ -290,6 +290,19 @@ public class FormBuilderWebController {
         if(callbackSetting == null || callbackSetting.isEmpty()){
             callbackSetting = "{}";
         }
+        
+        try {
+            JSONObject jobject = new JSONObject(callbackSetting);
+        } catch (JSONException joe) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        
+        if (!callback.matches("(?i)^[$A-Z_][0-9A-Z_$]*$")) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        
         String encodedCallbackSetting = URLEncoder.encode(StringEscapeUtils.escapeHtml(callbackSetting), "UTF-8");
 
         String csrfToken = SecurityUtil.getCsrfTokenName() + "=" + SecurityUtil.getCsrfTokenValue(request);
